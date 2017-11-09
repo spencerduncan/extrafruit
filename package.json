@@ -12,8 +12,14 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages-deploy",
+    "clean-source": "rimraf README.md src webroot package.json"
+  },
+  "gh-pages-deploy": {
+    "staticpath": "dist",
+    "post": [
+      "clean-source"
+    ]
   },
   "homepage": "https://spencerduncan.github.io/extrafruit",
   "devDependencies": {
