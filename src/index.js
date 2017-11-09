@@ -6,7 +6,7 @@ class Square extends React.Component {
     render() {
       return (
         <button className="square" style={this.props.style} onClick={() => this.props.onClick()}>
-            {this.props.value}          
+            <img src={colorToImage(this.props.style['backgroundColor'])} />
         </button>
       );
     }
@@ -33,7 +33,7 @@ class Row extends React.Component {
 class Board extends React.Component {
     constructor(props) {
         super(props);
-        let stater = Array(100).fill('white');
+        let stater = Array(100).fill('grey');
         this.state = {
             squares: stater,
             values: Array(64).fill(null),
@@ -58,7 +58,7 @@ class Board extends React.Component {
         let points = 0; 
         for (let i = 0; i<r; ++i){
             for (let j = 0; j<c-2; ++j){
-                if (( squares[i+j*c] === squares[i+(j+1)*c]) && 
+                if  ((squares[i+j*c] === squares[i+(j+1)*c]) && 
                     ( squares[i+j*c] === squares[i+(j+2)*c]) &&
                     ( squares[i+j*c] != 'black' )){
                     match[i+j*c] = 1;
@@ -239,6 +239,19 @@ class Board extends React.Component {
       const colors = ['red','orange','yellow','green','blue','purple','white']
       let index = Math.floor(Math.random()*colors.length)
       return colors[index]
+  }
+
+  function colorToImage(color){
+      const colorMap = {'red': 'img/apple.png',
+                        'orange': 'img/strawberry.png',
+                        'yellow': 'img/cherry.png',
+                        'green': 'img/grape.png',
+                        'blue':'img/kiwi.png',
+                        'purple':'img/orange.png',
+                        'white':'img/watermelon.png',
+                        'grey':'img/coin.png'
+                        };
+       return colorMap[color];
   }
   // ========================================
   
