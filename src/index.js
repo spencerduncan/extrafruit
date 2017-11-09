@@ -36,6 +36,7 @@ class Board extends React.Component {
         let stater = Array(100).fill('white');
         this.state = {
             squares: stater,
+            values: Array(64).fill(null),
             lastSelection: null,
             anim: false,
             score: 0,
@@ -51,6 +52,7 @@ class Board extends React.Component {
 
     clearFruits(squares){
         const match = Array(100).fill(0);
+        const values = this.state.values.slice();
         let r = this.state.h; let c = this.state.w;
         let done = true;
         let points = 0; 
@@ -83,12 +85,13 @@ class Board extends React.Component {
             for (let j = 0; j<c; ++j){
                 if (match[i+j*c] === 1){
                     squares[i+j*c] = 'grey'
+                    values[i+j*c] = "+1!"
                     points = points+1
                 }
             }
         }
         if (!done){
-            this.setState( () => ({squares: squares, score: this.state.score+points }), () => setTimeout(() => this.percolate(squares, match), 1000) )
+            this.setState( () => ({squares: squares, values: values, score: this.state.score+points }), () => setTimeout(() => this.percolate(squares, match), 1000) )
             return true
         } else {
             this.setState( () => ({anim: false}));
@@ -97,6 +100,7 @@ class Board extends React.Component {
     }
 
     percolate(squares, match){
+        const values = Array(64).fill(null);
         let r = this.state.h; let c = this.state.w;
         for (let i = 0; i<r; ++i){
             for (let j = 0; j<c; ++j){
@@ -118,7 +122,7 @@ class Board extends React.Component {
                 }
             }
         }
-        this.setState( () => ({squares: squares}), () => setTimeout( () => this.refill(squares), 1000 ) )
+        this.setState( () => ({squares: squares, values:values}), () => setTimeout( () => this.refill(squares), 1000 ) )
 
     }    
     
@@ -181,7 +185,8 @@ class Board extends React.Component {
         }
         //return this.state.squares[i]
         //return i
-        return <Square 
+        return <Square
+            value={this.state.values[i]} 
             style={styles}
             onClick={() => this.handleClick(i)}
             />;
